@@ -1,0 +1,23 @@
+def vfi_finite(par):
+    '''Finds optimal consumption paths in DP. Requires the call of function find_V'''
+
+    # 1) Allocate memory
+    Cstar, V = dict(), dict()
+    if par.rho < 1.0:
+        par.grid_M = np.linspace(0,par.M_max, par.NM)
+    else:
+        par.grid_M = np.linspace(par.tolerance,par.M_max, par.NM)
+
+    # 2) Last Period
+    Vstar[par.T], Cstar[par.T] = find_V(par, last = 1)
+
+    # 3) Backwards over time
+    for t in reversed(range(1,par.T)): # Start in period T-1
+
+        # a) Create interpolant of next period ressources
+        par.V_plus_interp = interpolate.interp1d(par.grid_M, Vstar[t+1], kind='linear', fill_value = "extrapolate")
+
+        # b) Find V for all other states
+        Vstar[t], Cstar[t] = find_V(par,0)
+
+    return(Cstar,Vstar)
