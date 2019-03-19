@@ -32,26 +32,26 @@ class Estimate():
 
         # Period t = 20
         c,m,P = sol.c[data.t], sol.m[data.t], data.P
-
         #3. Predict (convert normalized output back to normal, i.e. c,m -> C,M)
 
         # Interpolate solution
 
         c_interp = interpolate.interp1d(m, c, kind='linear', fill_value = "extrapolate")
 
-        c_predict = c_interp(data.m)
-
-        C_predict = c_predict * P
+        c_predict = c_interp(data.m) * P
 
         #4. Calculate errors
-        log_C = np.log(C_predict)
+        log_C = np.log(c_predict)
         log_C_data = data.logC
+
+        # Remove -Inf values
+        log_C[log_C == -np.Inf] = 0
 
         epsilon = log_C - log_C_data
 
         #5. Calculate log-likelihood
         psi = -0.5 * np.log(2*par.sigma_eta*np.pi) - epsilon**2 * (1/(2*par.sigma_eta**2))
-        log_likelihood = sum(psi)
+        log_likelihood = np.sum(psi)
         return log_likelihood
 
     @classmethod

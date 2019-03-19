@@ -37,6 +37,9 @@ data.t = 20
 data.M = sim.M[:,data.t]
 data.m = sim.m[:,data.t]
 data.P = sim.P[:,data.t]
+
+# Remove 0 C's
+sim.C[:,data.t][np.where(sim.C[:,data.t] == 0)] = 0.01
 data.logC = np.log(sim.C[:,data.t]) + np.sqrt(par.sigma_eta) * np.random.normal(size = par.simN)
 # %%
 # 5. Estimate
