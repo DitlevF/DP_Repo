@@ -21,12 +21,12 @@ par.u = lambda x, par: (x**(1-par.rho))/(1-par.rho)
 par.R = 1/par.beta
 
 # Gaussian Quadrature
-par.S = 8 
+par.S = 8
 par.sigma_zeta = 0.2
 par.mu = 0
 
 par.x,par.w = hermgauss(par.S)
-par.Y = np.exp(par.x * np.sqrt(2) * par.sigma_zeta)
+par.Y = np.exp(par.x * np.sqrt(2) * par.sigma_zeta) # S-dimensional vector
 par.w = par.w/np.sqrt(np.pi)
 
 par.tolerance = 10**(-6)
